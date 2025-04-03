@@ -1,0 +1,8 @@
+cpu-bind=MASK - cmp115, task  0  0 [1226505]: mask 0x40000000 set
+cpu-bind=MASK - cmp115, task  1  1 [1226506]: mask 0x200000000 set
+cpu-bind=MASK - cmp115, task  2  2 [1226507]: mask 0x400000000 set
+cpu-bind=MASK - cmp115, task  3  3 [1226508]: mask 0x800000000 set
+cpu-bind=MASK - cmp115, task  4  4 [1226509]: mask 0x8000000000 set
+cpu-bind=MASK - cmp115, task  5  5 [1226510]: mask 0x10000000000 set
+cpu-bind=MASK - cmp115, task  6  6 [1226511]: mask 0x20000000000 set
+cpu-bind=MASK - cmp115, task  7  7 [1226512]: mask 0x200000000000 set

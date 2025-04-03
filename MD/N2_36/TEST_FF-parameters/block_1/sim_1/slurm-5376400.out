@@ -1,0 +1,11 @@
+cpu-bind=MASK - cmp141, task  0  0 [1125361]: mask 0x20000 set
+cpu-bind=MASK - cmp141, task  1  1 [1125362]: mask 0x4000000 set
+cpu-bind=MASK - cmp141, task  2  2 [1125363]: mask 0x200000 set
+cpu-bind=MASK - cmp142, task  5  0 [1301763]: mask 0x2 set
+cpu-bind=MASK - cmp142, task  6  1 [1301764]: mask 0x40000000000 set
+cpu-bind=MASK - cmp142, task  7  2 [1301765]: mask 0x4000 set
+cpu-bind=MASK - cmp141, task  3  3 [1125364]: mask 0x8000000 set
+cpu-bind=MASK - cmp141, task  4  4 [1125365]: mask 0x80000000 set
+srun: error: cmp141: tasks 0-4: Exited with exit code 1
+srun: launch/slurm: _step_signal: Terminating StepId=5376400.0
+srun: error: cmp142: tasks 5-7: Exited with exit code 1

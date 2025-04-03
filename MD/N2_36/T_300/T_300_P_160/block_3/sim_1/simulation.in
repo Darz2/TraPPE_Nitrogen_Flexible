@@ -1,0 +1,132 @@
+# LAMMPS input script to run NPT
+
+variable        NAME index N2
+log             ${NAME}.log
+units		    real
+atom_style	    full
+boundary        p p p
+pair_style	    lj/cut/coul/long 12
+pair_modify     mix arithmetic tail yes
+kspace_style    pppm 1e-6     
+bond_style      harmonic
+angle_style     harmonic
+
+read_data       ./data.lmp           # read the positions --------------comment it out for restarting
+#read_restart   2.restart
+
+#----------------------------------------------------------------------------#
+# FORCEFIELD - TraPPE Flexible model for N2
+#----------------------------------------------------------------------------#
+
+pair_coeff      1   1  0.071539  3.310  # [N2]-L-[N2]
+pair_coeff      2   2  0.0009936 0.5   # N2-[L]
+ 
+bond_coeff      1   500 0.55            # [N2]-[L]
+
+angle_coeff     1   50 180              # N2-N2_X-N2
+
+mass 1 13.9067      # N2
+mass 2  0.1         # N2_X
+
+set type        1   charge     -0.482             # N2
+set type        2   charge      0.964             # N2_X
+
+#------------------------ VARIABLES------------------------------------------#
+
+variable  TEMP_INDEX       equal 300  # in K
+variable  PRESS_INDEX      equal 160  # in bar
+variable  RandomSeed       equal 35000  # RANDOM SEED   
+variable  nz_layers        equal 20
+variable  nx_layers        equal 3
+variable  timestep         equal 0.5
+
+variable  simulationTemp   equal ${TEMP_INDEX}
+variable  pressure         equal 0.987*${PRESS_INDEX}
+
+variable  Ninptpre         equal 50000             
+variable  Ninpt            equal 400000     # 0.2 ns
+variable  npt_run          equal 2000000    # 1 ns
+variable  NBR              equal ${npt_run}/100
+
+variable  Density          equal density
+variable  Volume           equal vol
+
+variable  dumpfreq         equal 1000
+variable  thermofreq       equal 1000
+variable  printfreq        equal 1000
+variable  restartfreq      equal 1000000
+
+variable  NVT_init         equal 200000    # 0.1 ns
+variable  NVT_init_2       equal 200000    # 0.1 ns
+variable  NVE_reshape      equal 10000
+variable  NVT_prod         equal 1000000   # 0.5 ns
+variable  NVE_cuboid       equal 200000    # 0.1 ns
+              
+variable  thermo_num       equal 1000
+
+#---------------------------- GROUPS/NEIGHBOUR - LIST -----------------------------------------------------------------------#
+
+group           oxy  type 1
+group           carb type 2
+
+neighbor	    3.0 bin
+neigh_modify    every 1 delay 0 check yes
+run_style       verlet
+
+#---------------------------- CONGUGATE-GRADIENT MINIMIZATION --------------------------------------------------------#
+
+#minimize energytolerance forcetolerance max_iterations_of_minimizer max_number_of_force_or_energy_evaluations
+minimize        1e-6 1e-8 100000 10000000
+
+#---------------------------- NPT simulations  ---------------------------------------------------------------------#
+
+fix runnpt all npt temp ${simulationTemp} ${simulationTemp} 10 iso ${pressure} ${pressure} 100
+
+thermo_style custom step pe ke etotal press temp v_Density
+thermo_modify flush yes
+thermo ${thermo_num}
+
+velocity all create ${simulationTemp} ${RandomSeed} mom yes rot yes dist gaussian
+
+#-----------------------
+# Run (Pre-Initialization)
+#-----------------------
+
+timestep    0.1
+run         ${Ninptpre}
+
+timestep    0.25
+run         ${Ninptpre} 
+
+timestep    0.5
+run         ${Ninptpre}
+
+#-----------------------
+# Run (Initialization)
+#-----------------------
+
+unfix       runnpt
+reset_timestep 0
+
+fix runnpt all npt temp ${simulationTemp} ${simulationTemp} 100 iso ${pressure} ${pressure} 1000
+
+timestep    ${timestep}
+run         ${Ninpt}
+
+unfix       runnpt
+reset_timestep 0
+
+#-------------------------------------------------- PRODUCTION ----------------------------------------------------------#
+
+fix	            npt_production all npt temp ${simulationTemp} ${simulationTemp} 100.0 iso ${pressure} ${pressure} 1000.0   
+fix             DensAve all ave/time 1 ${NBR} ${NBR} v_Density file density.dat
+fix             VoluAve all ave/time 1 ${npt_run} ${npt_run} v_Volume file volume.dat
+fix             Densfinal all ave/time 1 ${npt_run} ${npt_run} v_Density file density_final.dat
+
+restart         ${restartfreq} restart_${NAME}.1 restart_${NAME}.2
+
+run             ${npt_run}
+
+write_data      ${NAME}_final.data
+
+quit

@@ -1,0 +1,14 @@
+# N2
+
+ATOMS
+#     type     m/amu    q/e     pot  pars
+N2     N2     27.9134 -0.482    lj   3.310     0.071539
+N2_X   N2_X   0.1      0.964    lj   0.00      0.000
+
+BONDS
+# i   j    pot    re/A    kr/kJmol-1
+N2   N2_X   cons   0.55     2845.0
+
+ANGLES
+# i     j       k     pot    th/deg   ka/kjmol-1
+N2      N2_X    N2    harm   180.0    1236.0

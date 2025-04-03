@@ -1,0 +1,49 @@
+Compiled using GNU Fortran (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0 with all optimizations
+Last Brick update unknown
+Compiled at 16:28:53 on Sep  3 2023
+Starting at 16:11:00 on Jan 01 2025
+
+Settings
+OK                      
+
+Forcefield
+OK                      
+
+Topology
+OK                      
+
+Configuration
+OK                      Starting from random configuration.
+
+ F
+Monte Carlo Simulation initialized.
+
+#########################################################################################################################
+###########################################   ENERGY STARTING CONFIGURATION   ###########################################
+#########################################################################################################################
+                                               Box 1               Box 2
+-------------------------------------------------------------------------------------------------------------------------
+Lennard Jones        
+ Intermolecular                          0.1359241497E+008   0.9958671522E+004
+ Tailcorrection                         -0.3425892858E+004  -0.5143901109E+002
+Total Intermolecular                     0.1358898908E+008   0.9907232511E+004
+
+Electrostatic        
+ Real                                   -0.4945120350E+003  -0.8182348732E+003
+ Exclusion                               0.1043425830E+008   0.2037985693E+007
+ Selfterm                               -0.1044989240E+008  -0.2038978394E+007
+ Fourier                                 0.1600944194E+005   0.1101417454E+004
+Total Intermolecular                    -0.1191730347E+003  -0.7095190314E+003
+
+Intramolecular       
+ Lennard Jones                           0.0000000000E+000   0.0000000000E+000
+ Electrostatic                           0.0000000000E+000   0.0000000000E+000
+ Bending                                 0.9343375086E+007   0.3104111324E+007
+ Torsion                                 0.0000000000E+000   0.0000000000E+000
+
+Total                                    0.2293224499E+008   0.3113309038E+007
+
+#########################################################################################################################
+
+Simulation is running...
+ERROR                   Norm too small (Bending 3)

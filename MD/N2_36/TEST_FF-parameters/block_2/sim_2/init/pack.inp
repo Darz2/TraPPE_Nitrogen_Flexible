@@ -1,0 +1,9 @@
+# created by fftool
+tolerance 2.5
+filetype xyz
+output simbox.xyz
+
+structure N2_pack.xyz
+  number 500
+  inside box 1.5000 1.5000 1.5000 53.4650 53.4650 53.4650
+end structure

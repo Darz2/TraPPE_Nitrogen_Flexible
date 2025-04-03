@@ -1,0 +1,120 @@
+# LAMMPS input script to run NPT, BOXRESHAPE for CUBOID box
+
+variable        NAME index N2
+log             ${NAME}.log
+units		    real
+atom_style	    full
+boundary        p p p
+pair_style	    lj/cut/coul/long 12.0
+pair_modify     mix arithmetic tail yes
+kspace_style    pppm 1e-6     
+bond_style      harmonic
+angle_style     harmonic
+
+read_data       ./data.lmp           # read the positions --------------comment it out for restarting
+#read_restart   2.restart
+
+#----------------------------------------------------------------------------#
+# FORCEFIELD - TraPPE Flexible model for N2
+#----------------------------------------------------------------------------#
+
+pair_coeff      1   1  E_VAL  3.310  # [N2]-L-[N2]
+pair_coeff      2   2  0.0000    0.00   # N2-[L]
+ 
+bond_coeff      1   500 0.55            # [N2]-[L]
+
+angle_coeff     1   50 180              # N2-N2_X-N2
+
+mass 1 12.0067    # N2
+mass 2  4.0000    # N2_X
+
+set type        1   charge     -0.482             # N2
+set type        2   charge      0.964             # N2_X
+
+#------------------------ VARIABLES------------------------------------------#
+
+variable  TEMP_INDEX       equal T_VAL  # in K
+variable  PRESS_INDEX      equal P_VAL  # in bar
+variable  RandomSeed       equal R_VAL  # RANDOM SEED   
+variable  timestep         equal 1
+
+variable  simulationTemp   equal ${TEMP_INDEX}
+variable  pressure         equal 0.987*${PRESS_INDEX}
+
+variable  Ninptpre         equal 50000             
+variable  Ninpt            equal 100000
+variable  npt_run          equal 1000000
+variable  NBR              equal ${npt_run}/100   # Block averaging for density (NPT)
+
+variable  Density          equal density
+variable  Volume           equal vol
+
+variable  thermo_num       equal 1000
+
+#---------------------------- GROUPS/NEIGHBOUR - LIST -----------------------------------------------------------------------#
+
+group           nitrogen        type 1
+group           nitrigen_mid    type 2
+
+neighbor	    3.0 bin
+neigh_modify    every 1 delay 0 check yes
+run_style       verlet
+
+#---------------------------- CONGUGATE-GRADIENT MINIMIZATION --------------------------------------------------------#
+
+#minimize energytolerance forcetolerance max_iterations_of_minimizer max_number_of_force_or_energy_evaluations
+minimize        1e-6 1e-8 100000 10000000
+
+#---------------------------- NPT simulations  ---------------------------------------------------------------------#
+
+fix runnpt all npt temp ${simulationTemp} ${simulationTemp} 10 iso ${pressure} ${pressure} 100
+
+thermo_style custom step pe ke etotal press temp v_Density
+thermo_modify flush yes
+thermo ${thermo_num}
+
+velocity	    all create ${simulationTemp} ${RandomSeed} mom yes rot yes dist gaussian
+
+#-----------------------
+# Run (Pre-Initialization)
+#-----------------------
+
+timestep    0.1
+run         ${Ninptpre} 
+
+timestep    0.2
+run         ${Ninptpre} 
+
+timestep    0.25
+run         ${Ninptpre} 
+
+timestep    0.5
+run         ${Ninptpre}
+
+#-----------------------
+# Run (Initialization)
+#-----------------------
+
+unfix       runnpt
+reset_timestep 0
+
+fix runnpt all npt temp ${simulationTemp} ${simulationTemp} 100 iso ${pressure} ${pressure} 1000
+
+timestep    ${timestep}
+run         ${Ninpt}
+
+unfix       runnpt
+reset_timestep 0
+
+#-------------------------------------------------- PRODUCTION ----------------------------------------------------------#
+
+fix	            npt_production all npt temp ${simulationTemp} ${simulationTemp} 100.0 iso ${pressure} ${pressure} 1000.0   
+fix             DensAve all ave/time 1 ${NBR} ${NBR} v_Density file density.dat
+fix             VoluAve all ave/time 1 ${npt_run} ${npt_run} v_Volume file volume.dat
+fix             Densfinal all ave/time 1 ${npt_run} ${npt_run} v_Density file density_final.dat
+
+run             ${npt_run}
+
+unfix           npt_production
+
+quit

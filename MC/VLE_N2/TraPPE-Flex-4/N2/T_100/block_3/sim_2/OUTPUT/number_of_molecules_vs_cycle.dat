@@ -1,0 +1,6 @@
+# Cycle, ((number_of_molecules(Ib,Tm), Tm=1,N_MolType), Ib=1,N_Box)
+       100  320   80
+       200  329   71
+       300  335   65
+       400  338   62
+       500  341   59

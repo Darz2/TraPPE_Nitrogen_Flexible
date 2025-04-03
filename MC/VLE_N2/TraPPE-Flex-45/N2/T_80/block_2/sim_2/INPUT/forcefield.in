@@ -1,0 +1,26 @@
+  2 atomtype(s)
+Atom         Sigma     Epsilon    Charge  LJ? EL? Print
+N_N2_T      3.310     45.0      -0.482     T   T    N2
+M_N2_T       0.1      0.1        0.964     T   T    N2_X    
+---------------------------------------------------------------------------------------
+  1 bendingtype(s)
+Bending           theta0     K          dtheta
+N2_N_M_N         180      100643.91473   10
+---------------------------------------------------------------------------------------
+  0 torsiontype(s)
+Torsion A0        A1        A2        A3        A4        A5    dphi
+#######################################################################################
+                       Box 1     Box 2
+Ideal_Gas              .false.   .false.
+Cutoff_LJ_Energy       12.00     14.00
+Method_EL_Energy       Ewald     Ewald
+Cutoff_EL_Energy       12.00     20.00
+Alpha_EL_Energy        0.265058  0.155154
+Kmax_Ewald                8        8
+---------------------------------------------------------------------------------------
+LJ_Truncation           Tailcorrections
+Mixing_Rules            Lorentz-Berthelot
+---------------------------------------------------------------------------------------
+0 overrides
+atom 1  atom 2  Sigma   Epsilon   Rmin
+---------------------------------------------------------------------------------------

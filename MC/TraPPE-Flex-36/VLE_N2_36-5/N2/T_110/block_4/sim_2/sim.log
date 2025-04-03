@@ -1,0 +1,49 @@
+Compiled using GNU Fortran (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0 with all optimizations
+Last Brick update unknown
+Compiled at 16:28:53 on Sep  3 2023
+Starting at 15:00:24 on Jan 06 2025
+
+Settings
+OK                      
+
+Forcefield
+OK                      
+
+Topology
+OK                      
+
+Configuration
+OK                      Starting from random configuration.
+
+ F
+Monte Carlo Simulation initialized.
+
+#########################################################################################################################
+###########################################   ENERGY STARTING CONFIGURATION   ###########################################
+#########################################################################################################################
+                                               Box 1               Box 2
+-------------------------------------------------------------------------------------------------------------------------
+Lennard Jones        
+ Intermolecular                          0.9695762172E+007   0.1288208129E+004
+ Tailcorrection                         -0.3093621112E+004  -0.4645001238E+002
+Total Intermolecular                     0.9692668551E+007   0.1241758117E+004
+
+Electrostatic        
+ Real                                   -0.8350087446E+004   0.9455415489E+003
+ Exclusion                               0.1043425830E+008   0.2037985693E+007
+ Selfterm                               -0.1044989240E+008  -0.2038978394E+007
+ Fourier                                 0.1483936522E+005   0.9139994199E+003
+Total Intermolecular                    -0.9144825171E+004   0.8668393569E+003
+
+Intramolecular       
+ Lennard Jones                           0.0000000000E+000   0.0000000000E+000
+ Electrostatic                           0.0000000000E+000   0.0000000000E+000
+ Bending                                 0.9343375086E+007   0.3104111324E+007
+ Torsion                                 0.0000000000E+000   0.0000000000E+000
+
+Total                                    0.1902689881E+008   0.3106219922E+007
+
+#########################################################################################################################
+
+Simulation is running...
+ERROR                   Volume; Rcut is too large in Box 1

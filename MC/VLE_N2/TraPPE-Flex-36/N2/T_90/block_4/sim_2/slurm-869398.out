@@ -1,0 +1,22 @@
+At line 37 of file /home/darshan/brick_GE/SOURCE/write_configuration.f (unit = 100, file = './OUTPUT/CONFIGURATIONS/ALL.xyz')
+Fortran runtime error: Error closing file in OPEN statement
+
+Error termination. Backtrace:
+#0  0x48101a
+#1  0x481289
+#2  0x481d1f
+#3  0x4858cb
+#4  0x47747d
+#5  0x43d943
+#6  0x40199e
+#7  0x4ee88f
+#8  0x401fad
+
+Program received signal SIGSEGV: Segmentation fault - invalid memory reference.
+
+Backtrace for this error:
+#0  0x48101a
+#1  0x480925
+#2  0x4fcbaf
+#3  0x4e34e720
+./run: line 60: 2300071 Segmentation fault      ${BRICK_DIR_GE}/EXECUTABLES/Brick_GNUFortran_Optimized

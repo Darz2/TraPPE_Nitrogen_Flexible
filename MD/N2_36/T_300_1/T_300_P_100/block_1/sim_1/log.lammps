@@ -1,0 +1,10 @@
+LAMMPS (19 Nov 2024)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread. (src/comm.cpp:99)
+  using 1 OpenMP thread(s) per MPI task
+package omp 1
+using multi-threaded neighbor list subroutines
+# LAMMPS input script to run NPT
+
+variable        NAME index N2
+log             ${NAME}.log
+log             N2.log
